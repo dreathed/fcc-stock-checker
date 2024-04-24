@@ -1,5 +1,5 @@
 'use strict';
-require('dotenv').config();
+require('dotenv').config({path: "./sample.env"});
 const express     = require('express');
 const bodyParser  = require('body-parser');
 const cors        = require('cors');
@@ -8,8 +8,10 @@ const apiRoutes         = require('./routes/api.js');
 const fccTestingRoutes  = require('./routes/fcctesting.js');
 const runner            = require('./test-runner');
 
-const app = express();
+const helmet = require("helmet");
 
+const app = express();
+app.use(helmet.contentSecurityPolicy({directives: {defaultSrc: ["'self'"], scriptSrc: ["'self'"]}}))
 app.use('/public', express.static(process.cwd() + '/public'));
 
 app.use(cors({origin: '*'})); //For FCC testing purposes only
